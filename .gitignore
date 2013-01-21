@@ -1,4 +1,103 @@
-*.class
+lab1.class
+import java.util.Arrays;
+
+public class Lab1 {
+  public static boolean isSorted(int[] data) {
+		if (data == null)
+			throw new IllegalArgumentException();
+		
+		for (int i = 1; i < data.length; i++)
+			if (data[i - 1] > data[i])
+				return false;
+		return true;			
+	}
+	
+	public static boolean isGoodPassword(String password) {
+		if (password == null)
+			throw new IllegalArgumentException();
+		if (password.length() < 8)
+			return false;
+
+		int numOfDigits = 0;
+		int numOfPunctuation = 0;
+		for (int i = 0; i < password.length(); i++) {
+			char c = password.charAt(i);
+			if (Character.isDigit(c))
+				numOfDigits++;
+			else if (isPunctuation(c))
+				numOfPunctuation++;
+			else if (!Character.isLetter(c))
+				return false;
+		}
+		return numOfDigits >= 2 && numOfPunctuation >= 2;
+	}
+	
+	private static final char[] PUNCTUATION_CHARS = {'.', '!', '?', ',', ';',
+		':', '-', '/', '\'', '"', '(', ')', '[', ']'};
+	
+	private static boolean isPunctuation(char c) {
+		for (int i = 0; i < PUNCTUATION_CHARS.length; i++)
+			if (c == PUNCTUATION_CHARS[i])
+				return true;
+		return false;
+	}
+	
+	public static int[][] createPattern(int rows, int columns) {
+		if (rows < 0 || columns < 0)
+			throw new IllegalArgumentException();
+		
+		int[][] array = new int[rows][columns];
+		for (int r = 0; r < rows; r++) {
+			for (int c = 0; c < columns && c < r; c++)
+				array[r][c] = r + 1;
+			for (int c = r; c < columns; c++)
+				array[r][c] = c + 1;
+		}
+		return array;
+	}
+
+	public static void main(String[] args) {
+		// A few simple tests of the above methods.
+		
+		int[] test_data = {10};
+		if (!isSorted(test_data))
+			System.out.println("isSorted failed!");
+		test_data = new int[]{1, 2, 3, 4, 5, 6};
+		if (!isSorted(test_data))
+			System.out.println("isSorted failed!");
+		test_data = new int[]{6, 5, 4, 3, 2, 1};
+		if (isSorted(test_data))
+			System.out.println("isSorted failed!");
+		test_data = new int[]{0, 0, 2, 2, 4, 4};
+		if (!isSorted(test_data))
+			System.out.println("isSorted failed!");
+		test_data = new int[]{8, 2, 7, 3, 6, 4};
+		if (isSorted(test_data))
+			System.out.println("isSorted failed!");
+
+		if (!isGoodPassword("abcd.1.2"))
+			System.out.println("isGoodPassword failed!");
+		if (!isGoodPassword("turing54:("))
+			System.out.println("isGoodPassword failed!");
+		if (isGoodPassword("1337haxor"))
+			System.out.println("isGoodPassword failed!");
+		if (isGoodPassword("******"))
+			System.out.println("isGoodPassword failed!");
+		if (isGoodPassword("2funny&hats"))
+			System.out.println("isGoodPassword failed!");
+		
+		customArrayPrinting(createPattern(6, 6));
+		System.out.println();
+		customArrayPrinting(createPattern(3, 5));
+		System.out.println();
+		customArrayPrinting(createPattern(4, 2));
+	}
+	
+	private static void customArrayPrinting(int[][] array) {
+		for (int i = 0; i < array.length; i++)
+			System.out.println(Arrays.toString(array[i]));
+	}
+}
 
 # Package Files #
 *.jar
